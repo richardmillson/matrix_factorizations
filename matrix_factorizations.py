@@ -1,3 +1,8 @@
+"""
+class Matrix(object):
+    def __init__(self, entries):
+        self.entries = entries
+"""
 
 def size(matrix):
     """
@@ -56,10 +61,11 @@ def scalar_mult(c, A):
     scalar_mult() takes a scalar c and matrix A and returns a matrix
     """
     am, an = size(A)
+    mult = empty_matrix(am, an)
     for i in range(am):
         for j in range(an):
-            A[i][j] = c * A[i][j]
-    return A
+            mult[i][j] = c * A[i][j]
+    return mult
 
 def mult(A, B):
     am, an = size(A)
@@ -135,15 +141,31 @@ def add(A, B):
     """
     returns the matrix sum of A and B
     """
-    mat_sum = empty_matrix(size(A))
+    am, an = size(A)
+    mat_sum = empty_matrix(am, an)
     if size(A) == size(B):
-        pass
+        for i in range(am):
+            for j in range(an):
+                mat_sum = A[i][j] + B[i][j]
+        return mat_sum
     else:
         raise ArithmeticError("Attempting to add matrices of differing size")
 
+def row_add(matrix, source, target, multiple):
+    """
+    row_add() takes the source row, multiplies it by the mutliple, and adds this to the target row
+    """
+    mult_source = scalar_mult(multiple, [matrix[source]])
+    print mult_source
+    #new_row = add([matrix[target]], mult_source)
+    #print new_row
+    #print new_row[0]
+    #print matrix[target]
+    #matrix[target] = new_row[0]
+    #return matrix
+
 def show_matrix(matrix):
     """
-
     :type matrix: list
     """
     for row in matrix:
