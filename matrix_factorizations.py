@@ -127,15 +127,33 @@ def submatrix(A, i_exclude, j_exclude):
                     sub[i-1][j-1] = A[i][j]
     return sub
 
-def inverse(a_mat):
+def inverse(mat):
     """
     inverse() takes a matrix A and returns A^-1
     satisfying AA^-1 = I the identity matrix
     """
-    m, n = size(a_mat)
+    m, n = size(mat)
     if (m == 2) & (n == 2):
-        inv = scalar_mult(1.0 / det(a_mat), [[a_mat[1][1], -a_mat[0][1]], [-a_mat[1][0], a_mat[0][0]]])
+        inv = scalar_mult(1.0 / det(mat), [[mat[1][1], -mat[0][1]], [-mat[1][0], mat[0][0]]])
         return inv
+    elif m == n:
+        inv = empty_matrix(m, n)
+        for i in range(m):
+            inv[i][i] = 1
+        for i in range(m):
+            #mat[i] = 
+            pass
+    else:
+        raise ArithmeticError("Attempting to take inverse of nonsquare matrix")
+
+def row_mult(c, row):
+    """
+    row_mult takes a row and multiplies each entry by the scalar c
+    """
+    new_row = [None] * len(row)
+    for j in range(len(row)):
+        new_row[j] = c * row[j]
+    return new_row
 
 def add(A, B):
     """
@@ -146,23 +164,27 @@ def add(A, B):
     if size(A) == size(B):
         for i in range(am):
             for j in range(an):
-                mat_sum = A[i][j] + B[i][j]
+                mat_sum[i][j] = A[i][j] + B[i][j]
         return mat_sum
     else:
         raise ArithmeticError("Attempting to add matrices of differing size")
 
 def row_add(matrix, source, target, multiple):
     """
-    row_add() takes the source row, multiplies it by the mutliple, and adds this to the target row
+    row_add() takes the source row, multiplies it by the given mutliple, and adds this to the target row
     """
     mult_source = scalar_mult(multiple, [matrix[source]])
-    print mult_source
-    #new_row = add([matrix[target]], mult_source)
-    #print new_row
-    #print new_row[0]
-    #print matrix[target]
-    #matrix[target] = new_row[0]
-    #return matrix
+    new_row = add([matrix[target]], mult_source)
+    matrix[target] = new_row[0]
+    return matrix
+
+def col_add(matrix, source, target, multiple):
+    """
+    col_add() takes the source column, multiplies it by the given mutliple, and adds this to the target column
+    """
+    trans = transpose(matrix)
+    trans_sum = row_add(trans, source, target, multiple)
+    return transpose(trans_sum)
 
 def show_matrix(matrix):
     """

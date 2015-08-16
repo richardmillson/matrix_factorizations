@@ -56,13 +56,24 @@ def test_scalar_mult():
     b_mat = [[1, 2]]
     assert scalar_mult(2, b_mat) == [[2, 4]]
 
+def test_add():
+    a_mat = [[1, 0], [0, 1]]
+    b_mat = [[-1, 0], [0, -1]]
+    assert add(a_mat, b_mat) == [[0, 0], [0, 0]]
+
 def test_row_add():
     a_mat = [[1, 2], [2, 2]]
     sum_mat = row_add(a_mat, 0, 1, -2)
-    print sum_mat
     assert sum_mat == [[1, 2], [0, -2]]
 
-#test_row_add()
+def test_col_add():
+    a_mat = [[1, 2], [2, 2]]
+    sum_mat = col_add(a_mat, 0, 1, -2)
+    assert sum_mat == [[1, 0], [2, -2]]
+
+test_add()
+test_col_add()
+test_row_add()
 test_matrix_transpose()
 test_mult()
 test_submatrix()
