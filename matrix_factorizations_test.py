@@ -1,6 +1,12 @@
 
 from matrix_factorizations import *
 
+def test_copy():
+    a_mat = [[1, 2], [2, 2]]
+    b_mat = copy(a_mat)
+    b_mat[0][0] = 0
+    assert a_mat[0][0] == 1
+
 def test_matrix_transpose():
     a_mat = [[1, 1, 0], [0, 1, 0]]
     b_mat = [[1], [1], [0]]
@@ -8,7 +14,6 @@ def test_matrix_transpose():
     #show_matrix(b_mat)
     assert transpose(a_mat) == [[1, 0], [1, 1], [0, 0]]
     assert transpose(b_mat) == [[1, 1, 0]]
-
 
 def test_mult():
     a_mat = [[1, 1, 0], [0, 1, 0]]
@@ -40,15 +45,6 @@ def test_cross_product():
     #print product
     assert product == [[0, 0, 1]]
 
-def test_inverse():
-    a_mat = [[1.0, 2.0], [2.0, 2.0]]
-    #print inverse(a_mat)
-    #print mult(inverse(a_mat), a_mat)
-    #print mult(a_mat, inverse(a_mat))
-    assert inverse(a_mat) ==  [[-1.0, 1.0], [1.0, -0.5]]
-    assert mult(inverse(a_mat), a_mat) == [[1.0, 0], [0, 1.0]]
-    assert mult(a_mat, inverse(a_mat)) == [[1.0, 0], [0, 1.0]]
-
 def test_scalar_mult():
     a_mat = [[1, 2], [2, 2]]
     #print scalar_mult(2, a_mat)
@@ -65,19 +61,32 @@ def test_row_add():
     a_mat = [[1, 2], [2, 2]]
     sum_mat = row_add(a_mat, 0, 1, -2)
     assert sum_mat == [[1, 2], [0, -2]]
-
+"""
 def test_col_add():
     a_mat = [[1, 2], [2, 2]]
     sum_mat = col_add(a_mat, 0, 1, -2)
     assert sum_mat == [[1, 0], [2, -2]]
+"""
+def test_inverse():
+    a_mat = [[1.0, 2.0], [2.0, 2.0]]
+    #print inverse(a_mat)
+    #print mult(inverse(a_mat), a_mat)
+    #print mult(a_mat, inverse(a_mat))
+    assert inverse(a_mat) == [[-1.0, 1.0], [1.0, -0.5]]
+    assert mult(inverse(a_mat), a_mat) == [[1.0, 0], [0, 1.0]]
+    assert mult(a_mat, inverse(a_mat)) == [[1.0, 0], [0, 1.0]]
+    b_mat = [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 0.0]]
+    print b_mat
+    inverse(b_mat)
 
+test_inverse()
+test_copy()
 test_add()
-test_col_add()
-test_row_add()
+#test_col_add()
+#test_row_add()
 test_matrix_transpose()
 test_mult()
 test_submatrix()
 test_det()
 test_cross_product()
-test_inverse()
 test_scalar_mult()

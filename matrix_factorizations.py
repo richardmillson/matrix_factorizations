@@ -24,6 +24,24 @@ def empty_matrix(m, n):
     matrix = [[None]*n for i in range(m)]
     return matrix
 
+def identity(size):
+    """
+    identity() creates a size * size matrix where i == j = 1, i != j = 0
+    """
+    identity = [[0.0]*size for i in range(size)]
+    for i in range(size):
+        identity[i][i] = 1.0
+    return identity
+
+def copy(mat):
+    """
+    returns a copy of matrix mat
+    """
+    copy = []
+    for i in range(len(mat)):
+        copy.append(list(mat[i]))
+    return copy
+
 def transpose(matrix):
     """
     transpose() interchanges the rows and columns
@@ -60,12 +78,18 @@ def scalar_mult(c, A):
     """
     scalar_mult() takes a scalar c and matrix A and returns a matrix
     """
+    mult = []
+    for i in range(len(A)):
+        mult.append([c*x for x in A[i]])
+    return mult
+    """
     am, an = size(A)
     mult = empty_matrix(am, an)
     for i in range(am):
         for j in range(an):
             mult[i][j] = c * A[i][j]
     return mult
+    """
 
 def mult(A, B):
     am, an = size(A)
@@ -92,9 +116,9 @@ def det(A):
     else:
         for i in range(m):
             if i % 2 == 0:
-                determinant += det(submatrix(A,i,0))
+                determinant += det(submatrix(A, i, 0))
             elif i % 2 == 1:
-                determinant -= det(submatrix(A,i,0))
+                determinant -= det(submatrix(A, i, 0))
         return determinant
 
 def submatrix(A, i_exclude, j_exclude):
@@ -137,27 +161,50 @@ def inverse(mat):
         inv = scalar_mult(1.0 / det(mat), [[mat[1][1], -mat[0][1]], [-mat[1][0], mat[0][0]]])
         return inv
     elif m == n:
-        inv = empty_matrix(m, n)
+        inv = identity(m)
         for i in range(m):
-            inv[i][i] = 1
-        for i in range(m):
-            #mat[i] = 
-            pass
+            if mat[i][i] == 0:
+                itom = i + 1
+                while (mat[itom][i] == 0) & (itom < m + 1):
+                    itom += 1
+                if itom == m + 1:
+                    raise ArithmeticError("Attempting to take inverse of noninvertible matrix")
+                else:
+                    row_add(inv, itom, i, 1)
+                    row_add(mat, itom, i, 1)
+            kill_col(inv, i, n)
+            kill_col(mat, i, n)
+        print mat, inv
     else:
         raise ArithmeticError("Attempting to take inverse of nonsquare matrix")
+
+def kill_col(matrix, row, size):
+    matrix[row] = [(1.0 / matrix[row][row]) * x for x in matrix[row]]
+    for ith in range(size):
+        if row == ith:
+            pass
+        elif matrix[ith][row] == 0:
+            pass
+        else:
+            row_add(matrix, row, ith, (- 1.0 / matrix[ith][row]))
 
 def row_mult(c, row):
     """
     row_mult takes a row and multiplies each entry by the scalar c
     """
-    new_row = [None] * len(row)
-    for j in range(len(row)):
-        new_row[j] = c * row[j]
-    return new_row
+    return [c*x for x in row]
 
 def add(A, B):
     """
     returns the matrix sum of A and B
+    """
+    mat_sum = []
+    if size(A) == size(B):
+        for i in range(len(A)):
+            mat_sum.append([sum(x) for x in zip(A[i], B[i])])
+        return mat_sum
+    else:
+        raise ArithmeticError("Attempting to add matrices of differing size")
     """
     am, an = size(A)
     mat_sum = empty_matrix(am, an)
@@ -168,15 +215,17 @@ def add(A, B):
         return mat_sum
     else:
         raise ArithmeticError("Attempting to add matrices of differing size")
+    """
+
 
 def row_add(matrix, source, target, multiple):
     """
-    row_add() takes the source row, multiplies it by the given mutliple, and adds this to the target row
+    row_add() takes the source row, multiplies it by the given mutliple, adds this to the target row
+    it changes the matrix in place and does not return anything
     """
     mult_source = scalar_mult(multiple, [matrix[source]])
     new_row = add([matrix[target]], mult_source)
     matrix[target] = new_row[0]
-    return matrix
 
 def col_add(matrix, source, target, multiple):
     """
