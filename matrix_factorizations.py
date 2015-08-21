@@ -1,8 +1,10 @@
-"""
+
 class Matrix(object):
+
     def __init__(self, entries):
         self.entries = entries
-"""
+        self.m_size = len(entries)      # number of rows
+        self.n_size = len(entries[0])   # number of columns
 
 def size(matrix):
     """
@@ -174,7 +176,7 @@ def inverse(mat):
                     row_add(mat, itom, i, 1)
             kill_col(inv, i, n)
             kill_col(mat, i, n)
-        print mat, inv
+        #print mat, inv
     else:
         raise ArithmeticError("Attempting to take inverse of nonsquare matrix")
 

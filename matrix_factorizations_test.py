@@ -79,7 +79,14 @@ def test_inverse():
     print b_mat
     inverse(b_mat)
 
-test_inverse()
+def test_matrix():
+    mat = Matrix([[1, 0]])
+    assert mat.entries == [[1, 0]]
+    assert mat.m_size == 1
+    assert mat.n_size == 2
+
+test_matrix()
+#test_inverse()
 test_copy()
 test_add()
 #test_col_add()
