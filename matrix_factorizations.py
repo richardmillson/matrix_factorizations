@@ -6,6 +6,24 @@ class Matrix(object):
         self.m_size = len(entries)      # number of rows
         self.n_size = len(entries[0])   # number of columns
 
+    def clone(self):
+        """
+        returns a copy of matrix mat
+        """
+        cloned_entries = []
+        for i in range(len(self.entries)):
+            cloned_entries.append(list(self.entries[i]))
+        return Matrix(cloned_entries)
+
+def identity(size):
+    """
+    identity() creates a size * size matrix where i == j = 1, i != j = 0
+    """
+    entries = [[0.0]*size for i in range(size)]
+    for diagonal in range(size):
+        entries[diagonal][diagonal] = 1.0
+    return Matrix(entries)
+
 def size(matrix):
     """
     size() returns the number of rows m and columns n of the given matrix
@@ -25,24 +43,6 @@ def empty_matrix(m, n):
     """
     matrix = [[None]*n for i in range(m)]
     return matrix
-
-def identity(size):
-    """
-    identity() creates a size * size matrix where i == j = 1, i != j = 0
-    """
-    identity = [[0.0]*size for i in range(size)]
-    for i in range(size):
-        identity[i][i] = 1.0
-    return identity
-
-def copy(mat):
-    """
-    returns a copy of matrix mat
-    """
-    copy = []
-    for i in range(len(mat)):
-        copy.append(list(mat[i]))
-    return copy
 
 def transpose(matrix):
     """

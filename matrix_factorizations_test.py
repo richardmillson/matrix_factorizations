@@ -1,12 +1,6 @@
 
 from matrix_factorizations import *
 
-def test_copy():
-    a_mat = [[1, 2], [2, 2]]
-    b_mat = copy(a_mat)
-    b_mat[0][0] = 0
-    assert a_mat[0][0] == 1
-
 def test_matrix_transpose():
     a_mat = [[1, 1, 0], [0, 1, 0]]
     b_mat = [[1], [1], [0]]
@@ -85,9 +79,22 @@ def test_matrix():
     assert mat.m_size == 1
     assert mat.n_size == 2
 
+def test_identity():
+    assert identity(3).entries == [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+
+def test_clone():
+    mat_a = Matrix([[1, 2], [2, 2]])
+    mat_b = mat_a.clone()
+    mat_b.entries[0][0] = 0
+    assert mat_b.entries == [[0, 2], [2, 2]]
+    assert mat_a.entries[0][0] == 1
+
+
+
+test_identity()
 test_matrix()
 #test_inverse()
-test_copy()
+test_clone()
 test_add()
 #test_col_add()
 #test_row_add()
