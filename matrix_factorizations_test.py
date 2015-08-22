@@ -1,14 +1,6 @@
 
 from matrix_factorizations import *
 
-def test_matrix_transpose():
-    a_mat = [[1, 1, 0], [0, 1, 0]]
-    b_mat = [[1], [1], [0]]
-    #show_matrix(a_mat)
-    #show_matrix(b_mat)
-    assert transpose(a_mat) == [[1, 0], [1, 1], [0, 0]]
-    assert transpose(b_mat) == [[1, 1, 0]]
-
 def test_mult():
     a_mat = [[1, 1, 0], [0, 1, 0]]
     b_mat = [[1], [1], [0]]
@@ -73,14 +65,14 @@ def test_inverse():
     print b_mat
     inverse(b_mat)
 
-def test_matrix():
-    mat = Matrix([[1, 0]])
-    assert mat.entries == [[1, 0]]
-    assert mat.m_size == 1
-    assert mat.n_size == 2
-
-def test_identity():
-    assert identity(3).entries == [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+def test_init():
+    mat_a = Matrix([[1, 0]])
+    assert mat_a.entries == [[1, 0]]
+    assert mat_a.num_rows == 1
+    assert mat_a.num_cols == 2
+    mat_b = Matrix([])
+    assert mat_b.num_rows == 0
+    assert mat_b.num_cols == 0
 
 def test_clone():
     mat_a = Matrix([[1, 2], [2, 2]])
@@ -89,18 +81,29 @@ def test_clone():
     assert mat_b.entries == [[0, 2], [2, 2]]
     assert mat_a.entries[0][0] == 1
 
+def test_identity():
+    assert identity(3).entries == [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+
+def test_transpose():
+    mat_a = Matrix([[1, 1, 0], [0, 1, 0]])
+    mat_a.transpose()
+    assert mat_a.entries == [[1, 0], [1, 1], [0, 0]]
+    mat_b = Matrix([[1], [1], [0]])
+    mat_b.transpose()
+    assert mat_b.entries == [[1, 1, 0]]
 
 
+
+test_transpose()
 test_identity()
-test_matrix()
-#test_inverse()
 test_clone()
-test_add()
+test_init()
+#test_inverse()
+#test_add()
 #test_col_add()
 #test_row_add()
-test_matrix_transpose()
-test_mult()
-test_submatrix()
-test_det()
-test_cross_product()
-test_scalar_mult()
+#test_mult()
+#test_submatrix()
+#test_det()
+#test_cross_product()
+#test_scalar_mult()

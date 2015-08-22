@@ -3,17 +3,31 @@ class Matrix(object):
 
     def __init__(self, entries):
         self.entries = entries
-        self.m_size = len(entries)      # number of rows
-        self.n_size = len(entries[0])   # number of columns
+        self.num_rows = len(entries)      # number of rows
+        if self.num_rows == 0:
+            self.num_cols = 0
+        else:
+            self.num_cols = len(entries[0])   # number of columns
 
     def clone(self):
         """
-        returns a copy of matrix mat
+        returns a clone of self
         """
         cloned_entries = []
         for i in range(len(self.entries)):
             cloned_entries.append(list(self.entries[i]))
         return Matrix(cloned_entries)
+
+    def transpose(self):
+        """
+        interchanges the rows and columns
+        """
+        transposed_entries = []
+        for col in range(self.num_cols):
+            transposed_entries.append([])
+            for row in range(self.num_rows):
+                transposed_entries[col].append(self.entries[row][col])
+        self.entries = transposed_entries
 
 def identity(size):
     """
@@ -23,37 +37,6 @@ def identity(size):
     for diagonal in range(size):
         entries[diagonal][diagonal] = 1.0
     return Matrix(entries)
-
-def size(matrix):
-    """
-    size() returns the number of rows m and columns n of the given matrix
-    """
-    if len(matrix) == 0:
-        raise ArithmeticError("Matrix is empty")
-    else:
-        m = len(matrix)
-        n = len(matrix[0])
-        return m, n
-
-def empty_matrix(m, n):
-    """
-    empty_matrix() takes two integers m and n as arguments
-    and creates a matrix with m rows and n columns
-    with elements of type None
-    """
-    matrix = [[None]*n for i in range(m)]
-    return matrix
-
-def transpose(matrix):
-    """
-    transpose() interchanges the rows and columns
-    """
-    m, n = size(matrix)
-    trans = empty_matrix(n, m)
-    for row in range(m):
-        for col in range(n):
-            trans[col][row] = matrix[row][col]
-    return trans
 
 def dot_product(v1, v2):
     product = 0
