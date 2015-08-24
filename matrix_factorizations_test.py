@@ -24,13 +24,6 @@ def test_det():
     #print det(b_mat)
     assert det(b_mat) == -2
 
-def test_cross_product():
-    a_mat = [[1, 0, 0]]
-    b_mat = [[0, 1, 0]]
-    product = cross_product(a_mat, b_mat)
-    #print product
-    assert product == [[0, 0, 1]]
-
 def test_scalar_mult():
     a_mat = [[1, 2], [2, 2]]
     #print scalar_mult(2, a_mat)
@@ -65,7 +58,7 @@ def test_inverse():
     print b_mat
     inverse(b_mat)
 
-def test_init():
+def test_matrix_init():
     mat_a = Matrix([[1, 0]])
     assert mat_a.entries == [[1, 0]]
     assert mat_a.num_rows == 1
@@ -92,12 +85,28 @@ def test_transpose():
     mat_b.transpose()
     assert mat_b.entries == [[1, 1, 0]]
 
+def test_vector_init():
+    vec_a = Vector([[1, 2, 0]])
+    assert vec_a.entries == [[1, 2, 0]]
+
+def test_dot_product():
+    vec_a = Vector([[1, 2, 0]])
+    vec_b = Vector([[0, 2, 1]])
+    assert vec_a.dot_product(vec_b) == 4
+
+def test_cross_product():
+    vec_a = Vector([[1, 0, 0]])
+    vec_b = Vector([[0, 1, 0]])
+    assert vec_a.cross_product(vec_b) == [[0, 0, 1]]
 
 
+#test_cross_product()
+test_dot_product()
+test_vector_init()
 test_transpose()
 test_identity()
 test_clone()
-test_init()
+test_matrix_init()
 #test_inverse()
 #test_add()
 #test_col_add()
@@ -105,5 +114,4 @@ test_init()
 #test_mult()
 #test_submatrix()
 #test_det()
-#test_cross_product()
 #test_scalar_mult()

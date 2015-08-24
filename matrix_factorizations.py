@@ -38,26 +38,36 @@ def identity(size):
         entries[diagonal][diagonal] = 1.0
     return Matrix(entries)
 
-def dot_product(v1, v2):
-    product = 0
-    if len(v1) != len(v2):
-        raise ArithmeticError("Attempting to dot product two vectors of differing lengths")
-    elif len(v1) == 0:
-        raise ArithmeticError("Attempting to dot product an empty vector")
-    else:
-        for x in range(len(v1)):
-            product += v1[x] * v2[x]
-        return product
+class Vector(Matrix):
 
-def cross_product(v1, v2):
-    product = empty_matrix(1, 3)
-    if ((len(v1) == 1) & (len(v1[0]) == 3)) & ((len(v2) == 1) & (len(v2[0]) == 3)):
-        product[0][0] = det([[v1[0][1], v1[0][2]], [v2[0][1], v2[0][2]]])
-        product[0][1] = det([[v1[0][0], v1[0][2]], [v2[0][0], v2[0][2]]])
-        product[0][2] = det([[v1[0][0], v1[0][1]], [v2[0][0], v2[0][1]]])
-        return product
-    else:
-        raise ArithmeticError("Attempting to cross product two vectors not of length 3")
+    def __init__(self, entries):
+        self.entries = entries
+        self.num_rows = len(entries)      # number of rows
+        if self.num_rows != 1:
+            raise ArithmeticError("Attempting to create a vector that is actually a matrix")
+        else:
+            self.num_cols = len(entries[0])   # number of columns
+
+    def dot_product(self, other_vector):
+        product = 0
+        if self.num_cols != other_vector.num_cols:
+            raise ArithmeticError("Attempting to dot product two vectors of differing lengths")
+        elif self.num_cols == 0:
+            raise ArithmeticError("Attempting to dot product an empty vector")
+        else:
+            for x in range(self.num_cols):
+                product += self.entries[0][x] * other_vector.entries[0][x]
+            return product
+
+    def cross_product(self, other_vector):
+        product = Vector([[None, None, None]])
+        if (self.num_cols == 3) & (other_vector.num_cols == 3):
+            product.entries[0][0] = det([[self.entries[0][1], self.entries[0][2]], [other_vector.entries[0][1], other_vector.entries[0][2]]])
+            product.entries[0][1] = det([[self.entries[0][0], self.entries[0][2]], [other_vector.entries[0][0], other_vector.entries[0][2]]])
+            product.entries[0][2] = det([[self.entries[0][0], self.entries[0][1]], [other_vector.entries[0][0], other_vector.entries[0][1]]])
+            return product
+        else:
+            raise ArithmeticError("Attempting to cross product two vectors not of length 3")
 
 def scalar_mult(c, A):
     """
