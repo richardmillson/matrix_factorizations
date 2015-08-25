@@ -7,23 +7,6 @@ def test_mult():
     #show_matrix(mult(a_mat, b_mat))
     assert mult(a_mat, b_mat) == [[2], [1]]
 
-def test_submatrix():
-    a_mat = [['a', 'b', 'c'], ['d', 'e', 'f'], ['h', 'i', 'j']]
-    sub = submatrix(a_mat, 2, 2)
-    #show_matrix(sub)
-    assert sub == [['a', 'b'], ['d', 'e']]
-
-def test_det():
-    a_mat = [[1, 2],
-             [2, 2]]
-    #print det(a_mat)
-    assert det(a_mat) == -2
-    b_mat = [[1, 0, 0],
-             [0, 1, 2],
-             [0, 2, 2]]
-    #print det(b_mat)
-    assert det(b_mat) == -2
-
 def test_scalar_mult():
     a_mat = [[1, 2], [2, 2]]
     #print scalar_mult(2, a_mat)
@@ -94,24 +77,39 @@ def test_dot_product():
     vec_b = Vector([[0, 2, 1]])
     assert vec_a.dot_product(vec_b) == 4
 
+def test_submatrix():
+    mat_a = Matrix([['a', 'b', 'c'], ['d', 'e', 'f'], ['h', 'i', 'j']])
+    sub = mat_a.submatrix(2, 2)
+    assert sub.entries == [['a', 'b'], ['d', 'e']]
+
+def test_det():
+    mat_a = Matrix([[1, 2], [2, 2]])
+    #print mat_a.det()
+    assert mat_a.det() == -2
+    mat_b = Matrix([[1, 0, 0], [0, 1, 2], [0, 2, 2]])
+    #print mat_b.det()
+    assert mat_b.det() == -2
+
 def test_cross_product():
     vec_a = Vector([[1, 0, 0]])
     vec_b = Vector([[0, 1, 0]])
     assert vec_a.cross_product(vec_b) == [[0, 0, 1]]
 
 
+
 #test_cross_product()
+test_det()
+test_submatrix()
 test_dot_product()
 test_vector_init()
 test_transpose()
 test_identity()
 test_clone()
 test_matrix_init()
+
 #test_inverse()
 #test_add()
 #test_col_add()
 #test_row_add()
 #test_mult()
-#test_submatrix()
-#test_det()
 #test_scalar_mult()

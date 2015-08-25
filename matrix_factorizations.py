@@ -29,6 +29,51 @@ class Matrix(object):
                 transposed_entries[col].append(self.entries[row][col])
         self.entries = transposed_entries
 
+    def det(self):
+        determinant = 0
+        if self.num_rows != self.num_cols:
+            raise ArithmeticError("Attempting to take determinant of a nonsquare matrix")
+        elif self.num_rows < 2:
+            raise ArithmeticError("Attempting to take determinant of a single value")
+        elif self.num_rows == 2:
+            return self.entries[0][0] * self.entries[1][1] - self.entries[0][1] * self.entries[1][0]
+        else:
+            for i in range(self.num_rows):
+                if i % 2 == 0:
+                    determinant += self.submatrix(i, 0).det()
+                elif i % 2 == 1:
+                    determinant -= self.submatrix(i, 0).det()
+            return determinant
+
+    def submatrix(self, i_exclude, j_exclude):
+        """
+        submatrix(A,i_exclude,j_exclude) takes a matrix of m rows and n columns
+        and returns a matrix of size m-1 by n-1
+        where the ith row and jth column have been excluded
+        """
+        sub = Matrix([[0] * (self.num_cols - 1) for i in range(self.num_rows - 1)])
+        for i in range(self.num_rows):
+            if i == i_exclude:
+                pass
+            elif i < i_exclude:
+                for j in range(self.num_cols):
+                    if j == j_exclude:
+                        pass
+                    # issue with submatrix pointing to original entries, not copies
+                    elif j < j_exclude:
+                        sub.entries[i][j] = self.entries[i][j]
+                    elif j > j_exclude:
+                        sub.entries[i][j-1] = self.entries[i][j]
+            elif i > i_exclude:
+                for j in range(self.num_cols):
+                    if j == j_exclude:
+                        pass
+                    elif j < j_exclude:
+                        sub.entries[i-1][j] = self.entries[i][j]
+                    elif j > j_exclude:
+                        sub.entries[i-1][j-1] = self.entries[i][j]
+        return sub
+
 def identity(size):
     """
     identity() creates a size * size matrix where i == j = 1, i != j = 0
@@ -98,53 +143,6 @@ def mult(A, B):
             for j in range(bn):
                 product[i][j] = dot_product(A[i], B[j])
         return product
-
-def det(A):
-    m, n = size(A)
-    determinant = 0
-    if m != n:
-        raise ArithmeticError("Attempting to take determinant of a nonsquare matrix")
-    elif m < 2:
-        raise ArithmeticError("Attempting to take determinant of a single value")
-    elif m == 2:
-        return A[0][0] * A[1][1] - A[0][1] * A[1][0]
-    else:
-        for i in range(m):
-            if i % 2 == 0:
-                determinant += det(submatrix(A, i, 0))
-            elif i % 2 == 1:
-                determinant -= det(submatrix(A, i, 0))
-        return determinant
-
-def submatrix(A, i_exclude, j_exclude):
-    """
-    submatrix(A,i_exclude,j_exclude) takes a matrix of m rows and n columns
-    and returns a matrix of size m-1 by n-1
-    where the ith row and jth column have been excluded
-    """
-    m, n = size(A)
-    sub = empty_matrix(m - 1, n - 1)
-    for i in range(m):
-        if i == i_exclude:
-            pass
-        elif i < i_exclude:
-            for j in range(n):
-                if j == j_exclude:
-                    pass
-                # issue with submatrix pointing to original entries, not copies
-                elif j < j_exclude:
-                    sub[i][j] = A[i][j]
-                elif j > j_exclude:
-                    sub[i][j-1] = A[i][j]
-        elif i > i_exclude:
-            for j in range(n):
-                if j == j_exclude:
-                    pass
-                elif j < j_exclude:
-                    sub[i-1][j] = A[i][j]
-                elif j > j_exclude:
-                    sub[i-1][j-1] = A[i][j]
-    return sub
 
 def inverse(mat):
     """
