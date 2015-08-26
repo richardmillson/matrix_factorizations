@@ -107,9 +107,9 @@ class Vector(Matrix):
     def cross_product(self, other_vector):
         product = Vector([[None, None, None]])
         if (self.num_cols == 3) & (other_vector.num_cols == 3):
-            product.entries[0][0] = det([[self.entries[0][1], self.entries[0][2]], [other_vector.entries[0][1], other_vector.entries[0][2]]])
-            product.entries[0][1] = det([[self.entries[0][0], self.entries[0][2]], [other_vector.entries[0][0], other_vector.entries[0][2]]])
-            product.entries[0][2] = det([[self.entries[0][0], self.entries[0][1]], [other_vector.entries[0][0], other_vector.entries[0][1]]])
+            product.entries[0][0] = Matrix([[self.entries[0][1], self.entries[0][2]], [other_vector.entries[0][1], other_vector.entries[0][2]]]).det()
+            product.entries[0][1] = Matrix([[self.entries[0][0], self.entries[0][2]], [other_vector.entries[0][0], other_vector.entries[0][2]]]).det()
+            product.entries[0][2] = Matrix([[self.entries[0][0], self.entries[0][1]], [other_vector.entries[0][0], other_vector.entries[0][1]]]).det()
             return product
         else:
             raise ArithmeticError("Attempting to cross product two vectors not of length 3")

@@ -93,11 +93,11 @@ def test_det():
 def test_cross_product():
     vec_a = Vector([[1, 0, 0]])
     vec_b = Vector([[0, 1, 0]])
-    assert vec_a.cross_product(vec_b) == [[0, 0, 1]]
+    assert vec_a.cross_product(vec_b).entries == [[0, 0, 1]]
 
 
 
-#test_cross_product()
+test_cross_product()
 test_det()
 test_submatrix()
 test_dot_product()
