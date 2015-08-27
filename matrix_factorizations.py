@@ -74,6 +74,15 @@ class Matrix(object):
                         sub.entries[i-1][j-1] = self.entries[i][j]
         return sub
 
+    def scalar_mult(self, constant):
+        """
+        scalar_mult() multiplies each entry of self by constant
+        """
+        mult = []
+        for i in range(self.num_rows):
+            mult.append([constant * x for x in self.entries[i]])
+        return Matrix(mult)
+
 def identity(size):
     """
     identity() creates a size * size matrix where i == j = 1, i != j = 0
@@ -113,23 +122,6 @@ class Vector(Matrix):
             return product
         else:
             raise ArithmeticError("Attempting to cross product two vectors not of length 3")
-
-def scalar_mult(c, A):
-    """
-    scalar_mult() takes a scalar c and matrix A and returns a matrix
-    """
-    mult = []
-    for i in range(len(A)):
-        mult.append([c*x for x in A[i]])
-    return mult
-    """
-    am, an = size(A)
-    mult = empty_matrix(am, an)
-    for i in range(am):
-        for j in range(an):
-            mult[i][j] = c * A[i][j]
-    return mult
-    """
 
 def mult(A, B):
     am, an = size(A)

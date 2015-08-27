@@ -7,13 +7,6 @@ def test_mult():
     #show_matrix(mult(a_mat, b_mat))
     assert mult(a_mat, b_mat) == [[2], [1]]
 
-def test_scalar_mult():
-    a_mat = [[1, 2], [2, 2]]
-    #print scalar_mult(2, a_mat)
-    assert scalar_mult(2, a_mat) == [[2, 4], [4, 4]]
-    b_mat = [[1, 2]]
-    assert scalar_mult(2, b_mat) == [[2, 4]]
-
 def test_add():
     a_mat = [[1, 0], [0, 1]]
     b_mat = [[-1, 0], [0, -1]]
@@ -23,12 +16,12 @@ def test_row_add():
     a_mat = [[1, 2], [2, 2]]
     sum_mat = row_add(a_mat, 0, 1, -2)
     assert sum_mat == [[1, 2], [0, -2]]
-"""
+
 def test_col_add():
     a_mat = [[1, 2], [2, 2]]
     sum_mat = col_add(a_mat, 0, 1, -2)
     assert sum_mat == [[1, 0], [2, -2]]
-"""
+
 def test_inverse():
     a_mat = [[1.0, 2.0], [2.0, 2.0]]
     #print inverse(a_mat)
@@ -95,8 +88,13 @@ def test_cross_product():
     vec_b = Vector([[0, 1, 0]])
     assert vec_a.cross_product(vec_b).entries == [[0, 0, 1]]
 
+def test_scalar_mult():
+    mat_a = Matrix([[1, 2], [2, 2]])
+    assert mat_a.scalar_mult(2).entries == [[2, 4], [4, 4]]
+    mat_b = Matrix([[1, 2]])
+    assert mat_b.scalar_mult(2).entries == [[2, 4]]
 
-
+test_scalar_mult()
 test_cross_product()
 test_det()
 test_submatrix()
@@ -112,4 +110,3 @@ test_matrix_init()
 #test_col_add()
 #test_row_add()
 #test_mult()
-#test_scalar_mult()
