@@ -132,6 +132,44 @@ class Matrix(object):
         self.row_add(source, target, multiple)
         self.transpose()
 
+    def inverse(self):
+        """
+        inverse() takes a matrix A and returns A^-1
+        satisfying AA^-1 = I the identity matrix
+        """
+        if (self.num_rows == 2) & (self.num_cols == 2):
+            inv = Matrix([[self.entries[1][1], -self.entries[0][1]], [-self.entries[1][0], self.entries[0][0]]]).scalar_mult(1.0 / self.det())
+            return inv
+        elif self.num_rows == self.num_cols:
+            inv = identity(self.num_rows)
+            for i in range(self.num_rows):
+                if self.entries[i][i] == 0:
+                    itom = i + 1
+                    while (self.entries[itom][i] == 0) & (itom < m + 1):
+                        itom += 1
+                    if itom == m + 1:
+                        raise ArithmeticError("Attempting to take inverse of noninvertible matrix")
+                    else:
+                        row_add(inv, itom, i, 1)
+                        row_add(mat, itom, i, 1)
+                kill_col(inv, i, n)
+                kill_col(mat, i, n)
+            #print mat, inv
+        else:
+            raise ArithmeticError("Attempting to take inverse of nonsquare matrix")
+
+    def kill_col(self, row, size):
+        matrix[row] = [(1.0 / matrix[row][row]) * x for x in matrix[row]]
+        for ith in range(size):
+            if row == ith:
+                pass
+            elif matrix[ith][row] == 0:
+                pass
+            else:
+                row_add(matrix, row, ith, (- 1.0 / matrix[ith][row]))
+
+
+
 def identity(size):
     """
     identity() creates a size * size matrix where i == j = 1, i != j = 0
@@ -147,6 +185,8 @@ def zero(num_rows, num_cols):
     """
     zero = Matrix([[0.0] * num_cols for i in range(num_rows)])
     return zero
+
+
 
 class Vector(Matrix):
 
@@ -178,46 +218,3 @@ class Vector(Matrix):
             return product
         else:
             raise ArithmeticError("Attempting to cross product two vectors not of length 3")
-
-def inverse(mat):
-    """
-    inverse() takes a matrix A and returns A^-1
-    satisfying AA^-1 = I the identity matrix
-    """
-    m, n = size(mat)
-    if (m == 2) & (n == 2):
-        inv = scalar_mult(1.0 / det(mat), [[mat[1][1], -mat[0][1]], [-mat[1][0], mat[0][0]]])
-        return inv
-    elif m == n:
-        inv = identity(m)
-        for i in range(m):
-            if mat[i][i] == 0:
-                itom = i + 1
-                while (mat[itom][i] == 0) & (itom < m + 1):
-                    itom += 1
-                if itom == m + 1:
-                    raise ArithmeticError("Attempting to take inverse of noninvertible matrix")
-                else:
-                    row_add(inv, itom, i, 1)
-                    row_add(mat, itom, i, 1)
-            kill_col(inv, i, n)
-            kill_col(mat, i, n)
-        #print mat, inv
-    else:
-        raise ArithmeticError("Attempting to take inverse of nonsquare matrix")
-
-def kill_col(matrix, row, size):
-    matrix[row] = [(1.0 / matrix[row][row]) * x for x in matrix[row]]
-    for ith in range(size):
-        if row == ith:
-            pass
-        elif matrix[ith][row] == 0:
-            pass
-        else:
-            row_add(matrix, row, ith, (- 1.0 / matrix[ith][row]))
-
-def row_mult(c, row):
-    """
-    row_mult takes a row and multiplies each entry by the scalar c
-    """
-    return [c*x for x in row]

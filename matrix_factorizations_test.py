@@ -1,18 +1,6 @@
 
 from matrix_factorizations import *
 
-def test_inverse():
-    a_mat = [[1.0, 2.0], [2.0, 2.0]]
-    #print inverse(a_mat)
-    #print mult(inverse(a_mat), a_mat)
-    #print mult(a_mat, inverse(a_mat))
-    assert inverse(a_mat) == [[-1.0, 1.0], [1.0, -0.5]]
-    assert mult(inverse(a_mat), a_mat) == [[1.0, 0], [0, 1.0]]
-    assert mult(a_mat, inverse(a_mat)) == [[1.0, 0], [0, 1.0]]
-    b_mat = [[1.0, 0.0, 0.0], [0.0, 0.0, 1.0], [0.0, 1.0, 0.0]]
-    print b_mat
-    inverse(b_mat)
-
 def test_matrix_init():
     mat_a = Matrix([[1, 0]])
     assert mat_a.entries == [[1, 0]]
@@ -99,8 +87,19 @@ def test_col_add():
     mat_a.col_add(0, 1, -2)
     assert mat_a.entries == [[1, 0], [2, -2]]
 
+def test_inverse():
+    mat_a = Matrix([[1.0, 2.0], [2.0, 2.0]])
+    mat_a_inv = mat_a.inverse()
+    assert mat_a_inv.entries == [[-1.0, 1.0], [1.0, -0.5]]
+    assert mat_a.mult(mat_a_inv).entries == identity(2).entries
+    assert mat_a_inv.mult(mat_a).entries == identity(2).entries
+    #mat_b = [[1.0, 0.0, 0.0], [0.0, 1.0, 2.0], [0.0, 2.0, 2.0]]
+    #print mat_b.entries
+    #mat_b.inverse()
 
 
+
+test_inverse()
 test_col_add()
 test_row_add()
 test_add()
@@ -116,5 +115,3 @@ test_zero()
 test_identity()
 test_clone()
 test_matrix_init()
-
-#test_inverse()
