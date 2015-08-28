@@ -114,6 +114,24 @@ class Matrix(object):
         else:
             raise ArithmeticError("Attempting to add matrices of differing size")
 
+    def row_add(self, source, target, multiple):
+        """
+        row_add() takes the source row, multiplies it by the given mutliple, adds this to the target row
+        it changes the matrix in place and does not return anything
+        """
+        mult_source = Vector([self.entries[source]]).scalar_mult(multiple)
+        mult_target = Vector([self.entries[target]])
+        new_row = mult_target.add(mult_source)
+        self.entries[target] = new_row.entries[0]
+
+    def col_add(self, source, target, multiple):
+        """
+        col_add() takes the source column, multiplies it by the given mutliple, and adds this to the target column
+        """
+        self.transpose()
+        self.row_add(source, target, multiple)
+        self.transpose()
+
 def identity(size):
     """
     identity() creates a size * size matrix where i == j = 1, i != j = 0
@@ -203,29 +221,3 @@ def row_mult(c, row):
     row_mult takes a row and multiplies each entry by the scalar c
     """
     return [c*x for x in row]
-
-
-
-def row_add(matrix, source, target, multiple):
-    """
-    row_add() takes the source row, multiplies it by the given mutliple, adds this to the target row
-    it changes the matrix in place and does not return anything
-    """
-    mult_source = scalar_mult(multiple, [matrix[source]])
-    new_row = add([matrix[target]], mult_source)
-    matrix[target] = new_row[0]
-
-def col_add(matrix, source, target, multiple):
-    """
-    col_add() takes the source column, multiplies it by the given mutliple, and adds this to the target column
-    """
-    trans = transpose(matrix)
-    trans_sum = row_add(trans, source, target, multiple)
-    return transpose(trans_sum)
-
-def show_matrix(matrix):
-    """
-    :type matrix: list
-    """
-    for row in matrix:
-        print row

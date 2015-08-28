@@ -1,16 +1,6 @@
 
 from matrix_factorizations import *
 
-def test_row_add():
-    a_mat = [[1, 2], [2, 2]]
-    sum_mat = row_add(a_mat, 0, 1, -2)
-    assert sum_mat == [[1, 2], [0, -2]]
-
-def test_col_add():
-    a_mat = [[1, 2], [2, 2]]
-    sum_mat = col_add(a_mat, 0, 1, -2)
-    assert sum_mat == [[1, 0], [2, -2]]
-
 def test_inverse():
     a_mat = [[1.0, 2.0], [2.0, 2.0]]
     #print inverse(a_mat)
@@ -69,10 +59,8 @@ def test_submatrix():
 
 def test_det():
     mat_a = Matrix([[1, 2], [2, 2]])
-    #print mat_a.det()
     assert mat_a.det() == -2
     mat_b = Matrix([[1, 0, 0], [0, 1, 2], [0, 2, 2]])
-    #print mat_b.det()
     assert mat_b.det() == -2
 
 def test_cross_product():
@@ -85,6 +73,8 @@ def test_scalar_mult():
     assert mat_a.scalar_mult(2).entries == [[2, 4], [4, 4]]
     mat_b = Matrix([[1, 2]])
     assert mat_b.scalar_mult(2).entries == [[2, 4]]
+    vec_a = Vector([[1, 3, 9]])
+    assert vec_a.scalar_mult(3).entries == [[3, 9, 27]]
 
 def test_mult():
     mat_a = Matrix([[1, 1, 0], [0, 1, 0]])
@@ -95,9 +85,24 @@ def test_add():
     mat_a = Matrix([[1, 0], [0, 1]])
     mat_b = Matrix([[-1, 0], [0, -1]])
     assert mat_a.add(mat_b).entries == [[0, 0], [0, 0]]
+    vec_a = Vector([[1, 0, 1]])
+    vec_b = Vector([[0, 1, 0]])
+    assert vec_a.add(vec_b).entries == [[1, 1, 1]]
+
+def test_row_add():
+    mat_a = Matrix([[1, 2], [2, 2]])
+    mat_a.row_add(0, 1, -2)
+    assert mat_a.entries == [[1, 2], [0, -2]]
+
+def test_col_add():
+    mat_a = Matrix([[1, 2], [2, 2]])
+    mat_a.col_add(0, 1, -2)
+    assert mat_a.entries == [[1, 0], [2, -2]]
 
 
 
+test_col_add()
+test_row_add()
 test_add()
 test_mult()
 test_scalar_mult()
@@ -113,5 +118,3 @@ test_clone()
 test_matrix_init()
 
 #test_inverse()
-#test_col_add()
-#test_row_add()
