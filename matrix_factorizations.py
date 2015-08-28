@@ -28,6 +28,10 @@ class Matrix(object):
             for row in range(self.num_rows):
                 transposed_entries[col].append(self.entries[row][col])
         self.entries = transposed_entries
+        new_num_cols = self.num_rows
+        new_num_rows = self.num_cols
+        self.num_rows = new_num_rows
+        self.num_cols = new_num_cols
 
     def det(self):
         determinant = 0
@@ -83,14 +87,48 @@ class Matrix(object):
             mult.append([constant * x for x in self.entries[i]])
         return Matrix(mult)
 
+    def mult(self, other):
+        """
+        returns the matrix product of self times other
+        """
+        if self.num_cols != other.num_rows:
+            raise ArithmeticError("Attempting to multiply matrices of incompatible size")
+        else:
+            product = zero(self.num_rows, other.num_cols)
+            trans_other = other.clone()
+            trans_other.transpose()
+            for i in range(product.num_rows):
+                for j in range(product.num_cols):
+                    product.entries[i][j] = Vector([self.entries[i]]).dot_product(Vector([trans_other.entries[j]]))
+            return product
+
+    def add(self, other):
+        """
+        returns the matrix sum of self and other
+        """
+        mat_sum = []
+        if (self.num_rows == other.num_rows) & (self.num_cols == self.num_cols):
+            for i in range(self.num_rows):
+                mat_sum.append([sum(x) for x in zip(self.entries[i], other.entries[i])])
+            return Matrix(mat_sum)
+        else:
+            raise ArithmeticError("Attempting to add matrices of differing size")
+
 def identity(size):
     """
     identity() creates a size * size matrix where i == j = 1, i != j = 0
     """
-    entries = [[0.0]*size for i in range(size)]
+    entries = [[0.0] * size for i in range(size)]
     for diagonal in range(size):
         entries[diagonal][diagonal] = 1.0
     return Matrix(entries)
+
+def zero(num_rows, num_cols):
+    """
+    zero() returns a matrix of the given size with all entries zero
+    """
+    zero = Matrix([[0.0] * num_cols for i in range(num_rows)])
+    return zero
 
 class Vector(Matrix):
 
@@ -122,19 +160,6 @@ class Vector(Matrix):
             return product
         else:
             raise ArithmeticError("Attempting to cross product two vectors not of length 3")
-
-def mult(A, B):
-    am, an = size(A)
-    bm, bn = size(B)
-    B = transpose(B)
-    product = empty_matrix(am, bn)
-    if an != bm:
-        raise ArithmeticError("Attempting to multiply matrices of incompatible size")
-    else:
-        for i in range(am):
-            for j in range(bn):
-                product[i][j] = dot_product(A[i], B[j])
-        return product
 
 def inverse(mat):
     """
@@ -179,28 +204,6 @@ def row_mult(c, row):
     """
     return [c*x for x in row]
 
-def add(A, B):
-    """
-    returns the matrix sum of A and B
-    """
-    mat_sum = []
-    if size(A) == size(B):
-        for i in range(len(A)):
-            mat_sum.append([sum(x) for x in zip(A[i], B[i])])
-        return mat_sum
-    else:
-        raise ArithmeticError("Attempting to add matrices of differing size")
-    """
-    am, an = size(A)
-    mat_sum = empty_matrix(am, an)
-    if size(A) == size(B):
-        for i in range(am):
-            for j in range(an):
-                mat_sum[i][j] = A[i][j] + B[i][j]
-        return mat_sum
-    else:
-        raise ArithmeticError("Attempting to add matrices of differing size")
-    """
 
 
 def row_add(matrix, source, target, multiple):

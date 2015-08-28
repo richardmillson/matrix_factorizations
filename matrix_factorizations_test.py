@@ -1,17 +1,6 @@
 
 from matrix_factorizations import *
 
-def test_mult():
-    a_mat = [[1, 1, 0], [0, 1, 0]]
-    b_mat = [[1], [1], [0]]
-    #show_matrix(mult(a_mat, b_mat))
-    assert mult(a_mat, b_mat) == [[2], [1]]
-
-def test_add():
-    a_mat = [[1, 0], [0, 1]]
-    b_mat = [[-1, 0], [0, -1]]
-    assert add(a_mat, b_mat) == [[0, 0], [0, 0]]
-
 def test_row_add():
     a_mat = [[1, 2], [2, 2]]
     sum_mat = row_add(a_mat, 0, 1, -2)
@@ -52,6 +41,9 @@ def test_clone():
 
 def test_identity():
     assert identity(3).entries == [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+
+def test_zero():
+    assert zero(2, 3).entries == [[0, 0, 0], [0, 0, 0]]
 
 def test_transpose():
     mat_a = Matrix([[1, 1, 0], [0, 1, 0]])
@@ -94,6 +86,20 @@ def test_scalar_mult():
     mat_b = Matrix([[1, 2]])
     assert mat_b.scalar_mult(2).entries == [[2, 4]]
 
+def test_mult():
+    mat_a = Matrix([[1, 1, 0], [0, 1, 0]])
+    mat_b = Matrix([[1], [1], [0]])
+    assert mat_a.mult(mat_b).entries == [[2], [1]]
+
+def test_add():
+    mat_a = Matrix([[1, 0], [0, 1]])
+    mat_b = Matrix([[-1, 0], [0, -1]])
+    assert mat_a.add(mat_b).entries == [[0, 0], [0, 0]]
+
+
+
+test_add()
+test_mult()
 test_scalar_mult()
 test_cross_product()
 test_det()
@@ -101,12 +107,11 @@ test_submatrix()
 test_dot_product()
 test_vector_init()
 test_transpose()
+test_zero()
 test_identity()
 test_clone()
 test_matrix_init()
 
 #test_inverse()
-#test_add()
 #test_col_add()
 #test_row_add()
-#test_mult()
