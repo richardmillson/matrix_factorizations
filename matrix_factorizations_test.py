@@ -87,19 +87,26 @@ def test_col_add():
     mat_a.col_add(0, 1, -2)
     assert mat_a.entries == [[1, 0], [2, -2]]
 
+def test_kill_col():
+    mat_a = Matrix([[1.0, 2.0], [2.0, 2.0]])
+    #print mat_a.entries
+    mat_a.kill_col(0)
+    #print mat_a.entries
+
 def test_inverse():
     mat_a = Matrix([[1.0, 2.0], [2.0, 2.0]])
     mat_a_inv = mat_a.inverse()
     assert mat_a_inv.entries == [[-1.0, 1.0], [1.0, -0.5]]
     assert mat_a.mult(mat_a_inv).entries == identity(2).entries
     assert mat_a_inv.mult(mat_a).entries == identity(2).entries
-    #mat_b = [[1.0, 0.0, 0.0], [0.0, 1.0, 2.0], [0.0, 2.0, 2.0]]
-    #print mat_b.entries
+    mat_b = [[1.0, 0.0, 0.0], [0.0, 1.0, 2.0], [0.0, 2.0, 2.0]]
+    mat_b_inv = mat_b.inverse()
     #mat_b.inverse()
 
 
 
-test_inverse()
+#test_inverse()
+test_kill_col()
 test_col_add()
 test_row_add()
 test_add()

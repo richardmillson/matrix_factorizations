@@ -158,15 +158,19 @@ class Matrix(object):
         else:
             raise ArithmeticError("Attempting to take inverse of nonsquare matrix")
 
-    def kill_col(self, row, size):
-        matrix[row] = [(1.0 / matrix[row][row]) * x for x in matrix[row]]
-        for ith in range(size):
+    def kill_col(self, row):
+        """
+        kill_col() takes a diagonal entry of the given row which is a leading one
+        and then eliminates all other entries in that column
+        """
+        #self.entries[row] = [(1.0 / self.entries[row][row]) * x for x in matrix[row]]
+        for ith in range(self.num_cols):
             if row == ith:
                 pass
-            elif matrix[ith][row] == 0:
+            elif self.entries[ith][row] == 0:
                 pass
             else:
-                row_add(matrix, row, ith, (- 1.0 / matrix[ith][row]))
+                self.row_add(row, ith, (- self.entries[ith][row]))
 
 
 
