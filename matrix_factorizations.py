@@ -158,13 +158,29 @@ class Matrix(object):
         else:
             raise ArithmeticError("Attempting to take inverse of nonsquare matrix")
 
+    def rref(self):
+        """
+        rref() takes a matrix and performs row operations until it is in row reduced echelon form
+        """
+        for diagonal in range(min(self.num_rows, self.num_cols)):
+            if self.entries[diagonal][diagonal] == 0:
+                pass
+            else:
+                self.entries[diagonal] = [(1.0 / self.entries[diagonal][diagonal]) * x for x in self.entries[diagonal]]
+                for row in range(self.num_rows):
+                    if row == diagonal:
+                        pass
+                    else:
+                        self.row_add(diagonal, row, -self.entries[row][diagonal])
+
+
     def kill_col(self, row):
         """
         kill_col() takes a diagonal entry of the given row which is a leading one
         and then eliminates all other entries in that column
         """
-        #self.entries[row] = [(1.0 / self.entries[row][row]) * x for x in matrix[row]]
-        for ith in range(self.num_cols):
+        #self.entries[row] = [(1.0 / self.entries[row][row]) * x for x in self.entries[row]]
+        for ith in range(self.num_rows):
             if row == ith:
                 pass
             elif self.entries[ith][row] == 0:

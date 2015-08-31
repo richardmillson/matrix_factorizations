@@ -89,9 +89,9 @@ def test_col_add():
 
 def test_kill_col():
     mat_a = Matrix([[1.0, 2.0], [2.0, 2.0]])
-    #print mat_a.entries
+    print mat_a.entries
     mat_a.kill_col(0)
-    #print mat_a.entries
+    print mat_a.entries
 
 def test_inverse():
     mat_a = Matrix([[1.0, 2.0], [2.0, 2.0]])
@@ -103,10 +103,17 @@ def test_inverse():
     mat_b_inv = mat_b.inverse()
     #mat_b.inverse()
 
+def test_rref():
+    mat_a = Matrix([[1.0, 2.0], [2.0, 2.0]])
+    print mat_a.entries
+    mat_a.rref()
+    print mat_a.entries
+
 
 
 #test_inverse()
-test_kill_col()
+test_rref()
+#test_kill_col()
 test_col_add()
 test_row_add()
 test_add()
