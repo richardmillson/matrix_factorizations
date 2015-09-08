@@ -109,6 +109,9 @@ def test_rref():
     mat_a.rref()
     print mat_a.entries
 
+def test_svd():
+    mat_a = Matrix([[1.0, 1.0], [1.0, -1.0], [1.0, -1.0], [1.0, 1.0]])
+    assert mat_a.svd() == (Matrix([[0.5, 0.5, 0.5, 0.5], [0.5, -0.5, 0.5, -0.5], [0.5, -0.5, -0.5, 0.5], [0.5, 0.5, -0.5, -0.5]]).entries, Matrix([[2, 0], [0, 2], [0, 0], [0, 0]]).entries, Matrix([[1, 0], [0, 1]]).entries)
 
 
 #test_inverse()

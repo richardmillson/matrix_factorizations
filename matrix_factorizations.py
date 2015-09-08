@@ -238,3 +238,8 @@ class Vector(Matrix):
             return product
         else:
             raise ArithmeticError("Attempting to cross product two vectors not of length 3")
+
+def svd():
+    """
+    svd() takes a matrix and returns a single value decomposition
+    """
