@@ -18,6 +18,9 @@ class Matrix(object):
             cloned_entries.append(list(self.entries[i]))
         return Matrix(cloned_entries)
 
+    def __eq__(self, other):
+        return self.entries == other.entries
+
     def transpose(self):
         """
         interchanges the rows and columns
@@ -152,27 +155,31 @@ class Matrix(object):
                     else:
                         row_add(inv, itom, i, 1)
                         row_add(mat, itom, i, 1)
-                kill_col(inv, i, n)
-                kill_col(mat, i, n)
-            #print mat, inv
+                #kill_col(inv, i, n)
+                #kill_col(mat, i, n)
         else:
             raise ArithmeticError("Attempting to take inverse of nonsquare matrix")
 
     def rref(self):
         """
-        rref() takes a matrix and performs row operations until it is in row reduced echelon form
+        rref() returns the multiplicative inverse of the given matrix
+        simultaneously performs row operations until the original is in row reduced echelon form
         """
-        for diagonal in range(min(self.num_rows, self.num_cols)):
-            if self.entries[diagonal][diagonal] == 0:
+        solution = identity(self.num_rows)
+        clone = self.clone()
+        for diagonal in range(min(clone.num_rows, clone.num_cols)):
+            if clone.entries[diagonal][diagonal] == 0:
                 pass
             else:
-                self.entries[diagonal] = [(1.0 / self.entries[diagonal][diagonal]) * x for x in self.entries[diagonal]]
-                for row in range(self.num_rows):
+                solution.entries[diagonal] = [(1.0 / clone.entries[diagonal][diagonal]) * x for x in solution.entries[diagonal]]
+                clone.entries[diagonal] = [(1.0 / clone.entries[diagonal][diagonal]) * x for x in clone.entries[diagonal]]
+                for row in range(clone.num_rows):
                     if row == diagonal:
                         pass
                     else:
-                        self.row_add(diagonal, row, -self.entries[row][diagonal])
-
+                        solution.row_add(diagonal, row, -solution.entries[row][diagonal])
+                        clone.row_add(diagonal, row, -clone.entries[row][diagonal])
+        return solution
 
     def kill_col(self, row):
         """
@@ -187,8 +194,6 @@ class Matrix(object):
                 pass
             else:
                 self.row_add(row, ith, (- self.entries[ith][row]))
-
-
 
 def identity(size):
     """

@@ -17,6 +17,14 @@ def test_clone():
     assert mat_b.entries == [[0, 2], [2, 2]]
     assert mat_a.entries[0][0] == 1
 
+def test_equality():
+    vec_a = Vector([[1, 0, 0]])
+    vec_b = Vector([[1, 0, 0]])
+    assert vec_a == vec_b
+    mat_a = Matrix([[1, 1, 0], [0, 1, 0]])
+    mat_b = Matrix([[1], [1], [0]])
+    assert (mat_a == mat_b) == False
+
 def test_identity():
     assert identity(3).entries == [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
@@ -105,9 +113,13 @@ def test_inverse():
 
 def test_rref():
     mat_a = Matrix([[1.0, 2.0], [2.0, 2.0]])
-    print mat_a.entries
-    mat_a.rref()
-    print mat_a.entries
+    rref_a = mat_a.rref()
+    inv_a = mat_a.inverse()
+    print rref_a.entries
+    print inv_a.entries
+    #print mat_a.entries
+    #print inv_a.mult(mat_a).entries
+    #print mat_a.mult(inv_a).entries
 
 def test_svd():
     mat_a = Matrix([[1.0, 1.0], [1.0, -1.0], [1.0, -1.0], [1.0, 1.0]])
@@ -115,7 +127,7 @@ def test_svd():
 
 
 #test_inverse()
-test_rref()
+#test_rref()
 #test_kill_col()
 test_col_add()
 test_row_add()
@@ -130,5 +142,6 @@ test_vector_init()
 test_transpose()
 test_zero()
 test_identity()
+test_equality()
 test_clone()
 test_matrix_init()
